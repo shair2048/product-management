@@ -1,5 +1,5 @@
 import api from "@/api";
-import CreateBtn from "@/components/btn-create";
+import CustomBtn from "@/components/custom-btn";
 
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -38,7 +38,7 @@ const CreateProductScreen = () => {
           />
         </View>
       </View>
-      <CreateBtn label="Create Product" onChangePress={handlePress} />
+      <CustomBtn label="Create Product" onChangePress={handlePress} />
     </View>
   );
 };

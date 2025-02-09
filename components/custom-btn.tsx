@@ -7,7 +7,7 @@ interface createProductBtnProps {
   onChangePress: () => void;
 }
 
-const CreateBtn = ({ label, onChangePress }: createProductBtnProps) => {
+const CustomBtn = ({ label, onChangePress }: createProductBtnProps) => {
   return (
     <View style={createBtnStyles.container}>
       <TouchableOpacity
@@ -20,7 +20,7 @@ const CreateBtn = ({ label, onChangePress }: createProductBtnProps) => {
   );
 };
 
-export default CreateBtn;
+export default CustomBtn;
 
 const createBtnStyles = StyleSheet.create({
   container: {

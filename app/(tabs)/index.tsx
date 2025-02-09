@@ -1,5 +1,5 @@
 import api from "@/api";
-import CreateBtn from "@/components/btn-create";
+import CustomBtn from "@/components/custom-btn";
 import ProductItems from "@/components/product-items";
 import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
@@ -45,7 +45,7 @@ const HomeScreen = () => {
           ))}
         </View>
       </ScrollView>
-      <CreateBtn label="New Product" onChangePress={handlePress} />
+      <CustomBtn label="New Product" onChangePress={handlePress} />
     </View>
   );
 };

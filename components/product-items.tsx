@@ -10,12 +10,15 @@ interface productItemProps {
 const ProductItems = ({ _id, productName }: productItemProps) => {
   const router = useRouter();
 
-  //   const handlePress = () => {
-  //     router.push({ pathname: "/task-details", params: { id: _id } });
-  //   };
+  const handlePress = () => {
+    router.push({ pathname: "/product-detail", params: { id: _id } });
+  };
 
   return (
-    <TouchableOpacity onPress={() => {}} style={productItemStyles.productItems}>
+    <TouchableOpacity
+      onPress={handlePress}
+      style={productItemStyles.productItems}
+    >
       <Text style={productItemStyles.productName}>{productName}</Text>
     </TouchableOpacity>
   );
