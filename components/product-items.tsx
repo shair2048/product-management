@@ -1,13 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
 
 interface productItemProps {
   _id: string;
   productName: string;
+  productImage: string;
 }
 
-const ProductItems = ({ _id, productName }: productItemProps) => {
+const ProductItems = ({ _id, productName, productImage }: productItemProps) => {
   const router = useRouter();
 
   const handlePress = () => {
@@ -19,6 +20,15 @@ const ProductItems = ({ _id, productName }: productItemProps) => {
       onPress={handlePress}
       style={productItemStyles.productItems}
     >
+      <Image
+        style={{
+          width: 70,
+          height: 70,
+          borderRadius: 10,
+          backgroundColor: "red",
+        }}
+        source={{ uri: productImage }}
+      />
       <Text style={productItemStyles.productName}>{productName}</Text>
     </TouchableOpacity>
   );
@@ -35,6 +45,7 @@ const productItemStyles = StyleSheet.create({
     borderRadius: 12,
     borderColor: "#EAECF0",
     borderWidth: 1,
+    flexDirection: "row",
   },
   productName: {
     fontSize: 14,

@@ -11,6 +11,7 @@ const HomeScreen = () => {
   type Task = {
     _id: string;
     productName: string;
+    productImage: string;
   };
 
   const [products, setProducts] = useState<Task[]>([]);
@@ -41,6 +42,7 @@ const HomeScreen = () => {
               key={index}
               _id={product._id}
               productName={product.productName}
+              productImage={product.productImage}
             />
           ))}
         </View>
