@@ -1,5 +1,7 @@
 import api from "@/api";
 import CustomBtn from "@/components/custom-btn";
+import * as ImagePicker from "expo-image-picker";
+import { Ionicons } from "@expo/vector-icons";
 
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -10,19 +12,62 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Button,
+  Image,
+  Alert,
 } from "react-native";
 
 const CreateProductScreen = () => {
   const router = useRouter();
 
   const [productName, setProductName] = useState("");
+  const [image, setImage] = useState<string | null>(null);
 
-  const handlePress = async () => {
-    await api.post(`/product/create`, {
-      productName,
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Cấp quyền?");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
     });
 
-    router.push("/(tabs)");
+    if (!result.canceled) {
+      setImage(result.assets[0].uri); // Lưu đường dẫn ảnh
+    }
+  };
+
+  const handlePress = async () => {
+    // await api.post(`/product/create`, {
+    //   productName,
+    // });
+
+    let formData = new FormData();
+    formData.append("productName", productName);
+    formData.append("productImage", {
+      uri: image,
+      name: "product.jpg",
+      type: "image/jpeg",
+    } as any);
+
+    try {
+      const response = await api.post(`/product/create`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (response.data) {
+        // Alert.alert("Thành công!", "Sản phẩm đã được tạo.");
+        router.push("/(tabs)");
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error");
+    }
   };
 
   return (
@@ -36,6 +81,16 @@ const CreateProductScreen = () => {
             placeholderTextColor="#98A2B3"
             onChangeText={setProductName}
           />
+          <TouchableOpacity style={styles.uploadBox} onPress={pickImage}>
+            {image ? (
+              <Image source={{ uri: image }} style={styles.image} />
+            ) : (
+              <Ionicons name="cloud-upload-outline" size={40} color="#7D58FF" />
+            )}
+          </TouchableOpacity>
+
+          {/* <Button title="Select Image" onPress={pickImage} />
+          {image && <Image source={{ uri: image }} style={styles.image} />} */}
         </View>
       </View>
       <CustomBtn label="Create Product" onChangePress={handlePress} />
@@ -71,5 +126,19 @@ const styles = StyleSheet.create({
     borderColor: "#98A2B3",
     // height: 200,
     textAlignVertical: "top",
+  },
+  uploadBox: {
+    width: "100%",
+    height: 300,
+    marginTop: 16,
+    backgroundColor: "#F1F3F6",
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: "100%", // 100% của parent
+    height: "100%",
+    borderRadius: 8,
   },
 });
